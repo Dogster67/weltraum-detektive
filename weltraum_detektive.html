@@ -1,0 +1,781 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weltraum-Detektive 🚀</title>
+<style>
+:root {
+  --bg: #080d25;
+  --panel: #151d42;
+  --panel2: #202b55;
+  --text: #f4f6ff;
+  --muted: #c1c9ee;
+  --accent: #ffd166;
+  --blue: #76d7ff;
+  --green: #9df3bb;
+  --pink: #ff9fcf;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 15% 10%, #27356a 0, transparent 28%),
+    radial-gradient(circle at 85% 30%, #25184d 0, transparent 25%),
+    var(--bg);
+  color: var(--text);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+}
+header {
+  padding: 34px 18px 25px;
+  text-align: center;
+  background: linear-gradient(135deg, #18275a, #351d62);
+  border-bottom: 3px solid #76d7ff;
+}
+header .rocket { font-size: 3rem; }
+header h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin: 0;
+}
+header p { color: var(--muted); font-size: 1.1rem; }
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: #101735;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+nav button {
+  border: 1px solid #56679e;
+  background: #202b55;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+nav button:hover, nav button.active {
+  background: var(--accent);
+  color: #15152a;
+}
+main {
+  max-width: 1100px;
+  padding: 20px;
+  margin: auto;
+}
+section { padding: 18px 0 28px; }
+h2 { font-size: 2rem; color: var(--accent); }
+h3 { color: var(--blue); }
+p { max-width: 850px; }
+.intro {
+  background: linear-gradient(135deg, #1a2854, #302050);
+  padding: 24px;
+  border-radius: 22px;
+  border: 1px solid #5264a0;
+}
+.pill {
+  display: inline-block;
+  background: #344575;
+  padding: 5px 12px;
+  border-radius: 30px;
+  margin: 4px;
+  font-size: .9rem;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--panel);
+  border: 1px solid #354474;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 7px 20px #0003;
+}
+.card p { color: var(--muted); }
+.planet-card {
+  cursor: pointer;
+  transition: transform .18s, border-color .18s;
+}
+.planet-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+}
+.planet-icon {
+  font-size: 3.2rem;
+  text-align: center;
+  margin: 3px 0;
+}
+button, input, textarea { font: inherit; }
+.action {
+  display: inline-block;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background: var(--accent);
+  color: #19182c;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 5px 3px 5px 0;
+}
+.action:hover { filter: brightness(1.08); }
+.secondary {
+  background: #344575;
+  color: white;
+}
+.notice {
+  background: #25365d;
+  border-left: 5px solid var(--blue);
+  padding: 14px;
+  border-radius: 10px;
+  margin: 14px 0;
+}
+#planetDetail {
+  margin-top: 16px;
+  min-height: 90px;
+}
+.mission {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid #354474;
+  padding: 12px 0;
+}
+.mission input { width: 22px; height: 22px; accent-color: #9df3bb; }
+.mission label { cursor: pointer; }
+.progress {
+  height: 12px;
+  border-radius: 20px;
+  background: #0b102a;
+  overflow: hidden;
+  margin: 12px 0;
+}
+#progressBar {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, #76d7ff, #9df3bb);
+  transition: width .2s;
+}
+.question {
+  background: #202b55;
+  padding: 18px;
+  margin: 14px 0;
+  border-radius: 16px;
+}
+.question label {
+  display: block;
+  padding: 7px;
+  cursor: pointer;
+}
+.question input { accent-color: #ffd166; }
+.feedback { font-weight: bold; margin-top: 10px; }
+.good { color: var(--green); }
+.bad { color: var(--pink); }
+input[type="text"], textarea {
+  width: 100%;
+  max-width: 700px;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #7382b5;
+  background: #0d1431;
+  color: white;
+  margin: 5px 0 12px;
+}
+textarea { min-height: 140px; resize: vertical; }
+footer {
+  text-align: center;
+  padding: 30px 15px;
+  background: #101735;
+  color: var(--muted);
+}
+.hidden { display: none !important; }
+.small { color: var(--muted); font-size: .9rem; }
+.stars { font-size: 1.5rem; letter-spacing: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="rocket">🚀 🪐 ✨</div>
+  <h1>Weltraum-Detektive</h1>
+  <p>Entdecke unser Sonnensystem – deine Mission beginnt jetzt!</p>
+  <span class="pill">🔭 Forschen</span>
+  <span class="pill">🪐 Entdecken</span>
+  <span class="pill">🧠 Rätseln</span>
+</header>
+
+<nav aria-label="Hauptnavigation">
+  <button class="active" data-target="start">🏠 Start</button>
+  <button data-target="planeten">🪐 Planeten</button>
+  <button data-target="missionen">🧭 Missionen</button>
+  <button data-target="quiz">🧠 Quiz</button>
+  <button data-target="forscherheft">📓 Forscherheft</button>
+</nav>
+
+<main>
+<section id="start">
+  <div class="intro">
+    <h2>Willkommen an Bord, Weltraum-Detektiv!</h2>
+    <p>
+      Unser Sonnensystem steckt voller Geheimnisse. Gemeinsam besuchen wir
+      die acht Planeten, lösen knifflige Aufgaben und testen dein Wissen.
+      Bist du bereit für den Start?
+    </p>
+    <button class="action" onclick="showSection('planeten')">
+      🪐 Planeten entdecken
+    </button>
+    <button class="action secondary" onclick="showSection('missionen')">
+      🧭 Mission starten
+    </button>
+  </div>
+
+  <div class="grid" style="margin-top:18px">
+    <div class="card">
+      <div class="planet-icon">☀️</div>
+      <h3>Unser Stern</h3>
+      <p>Die Sonne liefert Licht und Wärme und steht im Zentrum unseres Sonnensystems.</p>
+    </div>
+    <div class="card">
+      <div class="planet-icon">🌍</div>
+      <h3>Unsere Heimat</h3>
+      <p>Die Erde ist unser Zuhause. Bis jetzt kennen wir keinen anderen Ort, an dem Menschen leben.</p>
+    </div>
+    <div class="card">
+      <div class="planet-icon">🌌</div>
+      <h3>Unendliche Fragen</h3>
+      <p>Wie entstehen Sterne? Gibt es Leben außerhalb der Erde? Die Forschung sucht nach Antworten.</p>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>Dein Forschungsziel:</strong>
+    Entdecke mindestens vier Planeten, erledige die Missionen und erreiche
+    im Quiz mindestens 6 von 8 Punkten!
+  </div>
+
+  <h3>Dein Forschungsfortschritt</h3>
+  <div class="progress"><div id="progressBar"></div></div>
+  <p id="progressText" class="small">0 von 12 Forschungsabzeichen gesammelt.</p>
+</section>
+
+<section id="planeten" class="hidden">
+  <h2>🪐 Die acht Planeten</h2>
+  <p>
+    Alle acht Planeten bewegen sich auf Bahnen um die Sonne.
+    Klicke auf eine Karte, um mehr über den jeweiligen Planeten zu erfahren.
+  </p>
+
+  <div class="grid" id="planetGrid">
+    <div class="card planet-card" onclick="planetInfo('merkur')">
+      <div class="planet-icon">⚫</div>
+      <h3>1. Merkur</h3>
+      <p>Der sonnennächste Planet.</p>
+      <span class="pill">Gesteinsplanet</span>
+    </div>
+    <div class="card planet-card" onclick="planetInfo('venus')">
+      <div class="planet-icon">🟡</div>
+      <h3>2. Venus</h3>
+      <p>Der heißeste Planet.</p>
+      <span class="pill">Dichte Atmosphäre</span>
+    </div>
+    <div class="card planet-card" onclick="planetInfo('erde')">
+      <div class="planet-icon">🌍</div>
+      <h3>3. Erde</h3>
+      <p>Unser blauer Heimatplanet.</p>
+      <span class="pill">Flüssiges Wasser</span>
+    </div>
+    <div class="card planet-card" onclick="planetInfo('mars')">
+      <div class="planet-icon">🔴</div>
+      <h3>4. Mars</h3>
+      <p>Der rote Planet.</p>
+      <span class="pill">Rostiger Staub</span>
+    </div>
+    <div class="card planet-card" onclick="planetInfo('jupiter')">
+      <div class="planet-icon">🟠</div>
+      <h3>5. Jupiter</h3>
+      <p>Der größte Planet.</p>
+      <span class="pill">Gasriese</span>
+    </div>
+    <div class="card planet-card" onclick="planetInfo('saturn')">
+      <div class="planet-icon">🪐</div>
+      <h3>6. Saturn</h3>
+      <p>Berühmt für seine Ringe.</p>
+      <span class="pill">Gasriese</span>
+    </div>
+    <div class="card planet-card" onclick="planetInfo('uranus')">
+      <div class="planet-icon">🔵</div>
+      <h3>7. Uranus</h3>
+      <p>Ein Planet, der stark gekippt rotiert.</p>
+      <span class="pill">Eisriese</span>
+    </div>
+    <div class="card planet-card" onclick="planetInfo('neptun')">
+      <div class="planet-icon">🔷</div>
+      <h3>8. Neptun</h3>
+      <p>Ein sehr weit entfernter Planet.</p>
+      <span class="pill">Eisriese</span>
+    </div>
+  </div>
+
+  <div id="planetDetail" class="card">
+    <h3>🔎 Dein Planetendossier</h3>
+    <p>Wähle oben einen Planeten aus, um dein Dossier zu öffnen.</p>
+  </div>
+
+  <div class="notice">
+    <strong>Merktipp:</strong>
+    Von der Sonne aus lautet die Reihenfolge:
+    Merkur, Venus, Erde, Mars, Jupiter, Saturn, Uranus, Neptun.
+  </div>
+</section>
+
+<section id="missionen" class="hidden">
+  <h2>🧭 Deine Weltraummissionen</h2>
+  <p>Erledige die Aufgaben und hake sie ab. Jede erledigte Aufgabe bringt dir ein Abzeichen.</p>
+
+  <div class="card">
+    <h3>Mission 1: Planeten-Spürnase</h3>
+    <div class="mission">
+      <input type="checkbox" id="m1" onchange="updateProgress()">
+      <label for="m1">Entdecke mindestens vier verschiedene Planeten auf der Planetenseite.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m2" onchange="updateProgress()">
+      <label for="m2">Finde heraus, welcher Planet der größte ist.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m3" onchange="updateProgress()">
+      <label for="m3">Finde den Planeten mit den berühmten Ringen.</label>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Mission 2: Weltraum-Fakten</h3>
+    <div class="mission">
+      <input type="checkbox" id="m4" onchange="updateProgress()">
+      <label for="m4">Erkläre mit eigenen Worten, warum es auf der Erde Tag und Nacht gibt.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m5" onchange="updateProgress()">
+      <label for="m5">Finde heraus, warum der Mars oft „roter Planet“ genannt wird.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m6" onchange="updateProgress()">
+      <label for="m6">Notiere eine Frage, die du über das Weltall hast.</label>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Mission 3: Forschergeist</h3>
+    <div class="mission">
+      <input type="checkbox" id="m7" onchange="updateProgress()">
+      <label for="m7">Beantworte alle acht Quizfragen.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m8" onchange="updateProgress()">
+      <label for="m8">Schreibe mindestens zwei Fakten in dein Forscherheft.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m9" onchange="updateProgress()">
+      <label for="m9">Erkläre einer anderen Person einen spannenden Weltraum-Fakt.</label>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>Mission 4: Bonusaufgaben</h3>
+    <div class="mission">
+      <input type="checkbox" id="m10" onchange="updateProgress()">
+      <label for="m10">Zeichne die acht Planeten in der richtigen Reihenfolge.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m11" onchange="updateProgress()">
+      <label for="m11">Vergleiche einen Gesteinsplaneten mit einem Gasriesen.</label>
+    </div>
+    <div class="mission">
+      <input type="checkbox" id="m12" onchange="updateProgress()">
+      <label for="m12">Erfinde einen Namen für eine eigene Weltraumsonde.</label>
+    </div>
+  </div>
+
+  <div class="notice">
+    <strong>Gut gemacht!</strong> Du musst nicht alles auf einmal schaffen.
+    Forschung braucht Neugier, Geduld und gute Fragen.
+  </div>
+</section>
+
+<section id="quiz" class="hidden">
+  <h2>🧠 Das große Weltraum-Quiz</h2>
+  <p>Wähle pro Frage eine Antwort. Klicke danach auf „Antworten prüfen“.</p>
+
+  <form id="quizForm">
+    <div class="question">
+      <h3>1. Was steht im Zentrum unseres Sonnensystems?</h3>
+      <label><input type="radio" name="q1" value="a"> Die Erde</label>
+      <label><input type="radio" name="q1" value="b"> Die Sonne</label>
+      <label><input type="radio" name="q1" value="c"> Der Mond</label>
+      <div id="f1" class="feedback"></div>
+    </div>
+
+    <div class="question">
+      <h3>2. Wie viele Planeten hat unser Sonnensystem?</h3>
+      <label><input type="radio" name="q2" value="a"> Sechs</label>
+      <label><input type="radio" name="q2" value="b"> Acht</label>
+      <label><input type="radio" name="q2" value="c"> Zwölf</label>
+      <div id="f2" class="feedback"></div>
+    </div>
+
+    <div class="question">
+      <h3>3. Welcher Planet ist der größte?</h3>
+      <label><input type="radio" name="q3" value="a"> Mars</label>
+      <label><input type="radio" name="q3" value="b"> Saturn</label>
+      <label><input type="radio" name="q3" value="c"> Jupiter</label>
+      <div id="f3" class="feedback"></div>
+    </div>
+
+    <div class="question">
+      <h3>4. Welcher Planet ist für seine auffälligen Ringe bekannt?</h3>
+      <label><input type="radio" name="q4" value="a"> Saturn</label>
+      <label><input type="radio" name="q4" value="b"> Merkur</label>
+      <label><input type="radio" name="q4" value="c"> Erde</label>
+      <div id="f4" class="feedback"></div>
+    </div>
+
+    <div class="question">
+      <h3>5. Warum erscheint der Mars rötlich?</h3>
+      <label><input type="radio" name="q5" value="a"> Wegen roter Pflanzen</label>
+      <label><input type="radio" name="q5" value="b"> Wegen eisenhaltigen Staubs und Gesteins</label>
+      <label><input type="radio" name="q5" value="c"> Wegen seiner heißen Lava-Ozeane</label>
+      <div id="f5" class="feedback"></div>
+    </div>
+
+    <div class="question">
+      <h3>6. Was ist die Erde?</h3>
+      <label><input type="radio" name="q6" value="a"> Ein Stern</label>
+      <label><input type="radio" name="q6" value="b"> Ein Komet</label>
+      <label><input type="radio" name="q6" value="c"> Ein Planet</label>
+      <div id="f6" class="feedback"></div>
+    </div>
+
+    <div class="question">
+      <h3>7. Was verursacht Tag und Nacht auf der Erde?</h3>
+      <label><input type="radio" name="q7" value="a"> Die Drehung der Erde um sich selbst</label>
+      <label><input type="radio" name="q7" value="b"> Die Drehung des Mondes um die Erde</label>
+      <label><input type="radio" name="q7" value="c"> Die Jahreszeiten</label>
+      <div id="f7" class="feedback"></div>
+    </div>
+
+    <div class="question">
+      <h3>8. Welcher Planet ist am weitesten von der Sonne entfernt?</h3>
+      <label><input type="radio" name="q8" value="a"> Venus</label>
+      <label><input type="radio" name="q8" value="b"> Neptun</label>
+      <label><input type="radio" name="q8" value="c"> Jupiter</label>
+      <div id="f8" class="feedback"></div>
+    </div>
+
+    <button type="button" class="action" onclick="checkQuiz()">Antworten prüfen</button>
+    <button type="reset" class="action secondary" onclick="resetQuiz()">Neu starten</button>
+  </form>
+
+  <div id="quizResult" class="card hidden" aria-live="polite" style="margin-top:16px"></div>
+</section>
+
+<section id="forscherheft" class="hidden">
+  <h2>📓 Mein digitales Forscherheft</h2>
+  <p>Halte deine Entdeckungen fest. Du kannst deine Notizen als Textdatei speichern.</p>
+
+  <div class="card">
+    <label for="studentName"><strong>Name oder Forschername</strong></label>
+    <input id="studentName" type="text" placeholder="Zum Beispiel: Captain Sternenstaub">
+
+    <label for="favoritePlanet"><strong>Mein Lieblingsplanet</strong></label>
+    <input id="favoritePlanet" type="text" placeholder="Welcher Planet gefällt dir besonders?">
+
+    <label for="facts"><strong>Drei Dinge, die ich gelernt habe</strong></label>
+    <textarea id="facts" placeholder="1. ...&#10;2. ...&#10;3. ..."></textarea>
+
+    <label for="question"><strong>Meine große Weltraumfrage</strong></label>
+    <textarea id="question" placeholder="Was möchtest du noch über das Weltall wissen?"></textarea>
+
+    <label for="missionIdea"><strong>Meine eigene Weltraummission</strong></label>
+    <textarea id="missionIdea" placeholder="Wohin würde ich reisen? Was würde ich erforschen?"></textarea>
+
+    <button class="action" onclick="downloadNotes()">📥 Forscherheft speichern</button>
+    <button class="action secondary" onclick="clearNotes()">Felder leeren</button>
+    <p class="small">Hinweis: Deine Einträge werden nicht an einen Server geschickt. Speichere sie als Datei, damit du sie später wiederfindest.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <p>🌎 Weltraum-Detektive · Neugierig bleiben und weiterforschen!</p>
+  <p class="small">Ein Lernprojekt für Schülerinnen und Schüler von 10 bis 12 Jahren.</p>
+</footer>
+
+<script>
+const planetData = {
+  merkur: {
+    name: "Merkur",
+    emoji: "⚫",
+    type: "Gesteinsplanet",
+    fact: "Merkur ist der sonnennächste und kleinste Planet unseres Sonnensystems.",
+    detail: "Er besitzt fast keine schützende Atmosphäre. Deshalb unterscheiden sich die Temperaturen zwischen Tag und Nacht sehr stark.",
+    fun: "Ein Jahr auf Merkur dauert nur 88 Erdtage."
+  },
+  venus: {
+    name: "Venus",
+    emoji: "🟡",
+    type: "Gesteinsplanet",
+    fact: "Die Venus ist der heißeste Planet unseres Sonnensystems.",
+    detail: "Ihre dichte Atmosphäre hält Wärme besonders gut fest. Das nennt man einen starken Treibhauseffekt.",
+    fun: "Die Venus dreht sich sehr langsam und in entgegengesetzter Richtung zu den meisten Planeten."
+  },
+  erde: {
+    name: "Erde",
+    emoji: "🌍",
+    type: "Gesteinsplanet",
+    fact: "Die Erde ist unser Heimatplanet und besitzt große Mengen flüssigen Wassers an ihrer Oberfläche.",
+    detail: "Unsere Atmosphäre enthält Sauerstoff, den viele Lebewesen zum Atmen brauchen. Die Erde bewegt sich auf einer Umlaufbahn um die Sonne.",
+    fun: "Etwa 71 Prozent der Erdoberfläche sind von Wasser bedeckt."
+  },
+  mars: {
+    name: "Mars",
+    emoji: "🔴",
+    type: "Gesteinsplanet",
+    fact: "Der Mars wird wegen seines rötlichen Aussehens oft der rote Planet genannt.",
+    detail: "Eisenhaltige Stoffe im Boden reagieren mit Sauerstoff und bilden rostähnliche Verbindungen. Roboter untersuchen den Mars, um mehr über seine Geschichte zu erfahren.",
+    fun: "Auf dem Mars steht der Olympus Mons, einer der größten bekannten Vulkane des Sonnensystems."
+  },
+  jupiter: {
+    name: "Jupiter",
+    emoji: "🟠",
+    type: "Gasriese",
+    fact: "Jupiter ist der größte Planet unseres Sonnensystems.",
+    detail: "Er besteht überwiegend aus Wasserstoff und Helium. Der Große Rote Fleck ist ein gewaltiger Sturm, der schon sehr lange beobachtet wird.",
+    fun: "Jupiter besitzt viele bekannte Monde, darunter Ganymed, den größten Mond des Sonnensystems."
+  },
+  saturn: {
+    name: "Saturn",
+    emoji: "🪐",
+    type: "Gasriese",
+    fact: "Saturn ist für sein auffälliges Ringsystem bekannt.",
+    detail: "Die Ringe bestehen vor allem aus Eisstückchen, Gestein und Staub. Saturn besteht größtenteils aus Wasserstoff und Helium.",
+    fun: "Saturn hat eine sehr geringe mittlere Dichte – geringer als die von Wasser."
+  },
+  uranus: {
+    name: "Uranus",
+    emoji: "🔵",
+    type: "Eisriese",
+    fact: "Uranus erscheint blaugrün und rotiert stark gekippt.",
+    detail: "Methan in seiner Atmosphäre absorbiert rotes Licht und trägt zur blaugrünen Farbe bei. Er ist sehr kalt und besitzt ebenfalls ein Ringsystem.",
+    fun: "Seine Rotationsachse ist so stark geneigt, dass er gewissermaßen auf der Seite rollt."
+  },
+  neptun: {
+    name: "Neptun",
+    emoji: "🔷",
+    type: "Eisriese",
+    fact: "Neptun ist der achte Planet und der am weitesten von der Sonne entfernte Planet.",
+    detail: "Er ist ein kalter Eisriese mit einer dynamischen Atmosphäre. Dort treten extrem starke Winde auf.",
+    fun: "Neptun braucht ungefähr 165 Erdjahre für einen Umlauf um die Sonne."
+  }
+};
+
+const discovered = new Set();
+
+function showSection(id) {
+  document.querySelectorAll("main section").forEach(section => {
+    section.classList.toggle("hidden", section.id !== id);
+  });
+
+  document.querySelectorAll("nav button").forEach(button => {
+    button.classList.toggle("active", button.dataset.target === id);
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("nav button").forEach(button => {
+  button.addEventListener("click", () => showSection(button.dataset.target));
+});
+
+function planetInfo(key) {
+  const p = planetData[key];
+  discovered.add(key);
+
+  document.getElementById("planetDetail").innerHTML = `
+    <div class="planet-icon">${p.emoji}</div>
+    <h3>${p.name} – dein Planetendossier</h3>
+    <p><strong>Planetentyp:</strong> ${p.type}</p>
+    <p><strong>Steckbrief:</strong> ${p.fact}</p>
+    <p><strong>Mehr erfahren:</strong> ${p.detail}</p>
+    <div class="notice"><strong>⭐ Überraschender Fakt:</strong> ${p.fun}</div>
+    <p class="good">🔎 Entdeckung eingetragen: ${discovered.size} von 8 Planeten.</p>
+  `;
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const missions = Array.from(
+    document.querySelectorAll('input[type="checkbox"][id^="m"]')
+  );
+
+  const checked = missions.filter(item => item.checked).length;
+  const total = missions.length;
+  const planetPoints = Math.min(discovered.size, 4);
+  const quizPoints = window.quizPassed ? 1 : 0;
+
+  const score = checked + planetPoints + quizPoints;
+  const max = total + 5;
+  const percent = Math.round(score / max * 100);
+
+  document.getElementById("progressBar").style.width = percent + "%";
+  document.getElementById("progressText").textContent =
+    `${score} von ${max} Forschungsabzeichen gesammelt (${percent} %).`;
+}
+
+const answers = {
+  q1: { value: "b", why: "Die Sonne ist der Stern im Zentrum unseres Sonnensystems." },
+  q2: { value: "b", why: "Unser Sonnensystem hat acht Planeten." },
+  q3: { value: "c", why: "Jupiter ist der größte Planet." },
+  q4: { value: "a", why: "Saturn besitzt ein besonders auffälliges Ringsystem." },
+  q5: { value: "b", why: "Eisenhaltige Stoffe im Marsboden bilden rostähnliche Verbindungen." },
+  q6: { value: "c", why: "Die Erde ist ein Planet, der unsere Sonne umkreist." },
+  q7: { value: "a", why: "Die Erde dreht sich um ihre eigene Achse. Dadurch wechseln Tag und Nacht." },
+  q8: { value: "b", why: "Neptun ist der achte und am weitesten von der Sonne entfernte Planet." }
+};
+
+function checkQuiz() {
+  let score = 0;
+  let answered = 0;
+
+  Object.entries(answers).forEach(([name, answer], index) => {
+    const selected = document.querySelector(`input[name="${name}"]:checked`);
+    const feedback = document.getElementById("f" + (index + 1));
+
+    if (!selected) {
+      feedback.textContent = "Noch keine Antwort ausgewählt.";
+      feedback.className = "feedback bad";
+      return;
+    }
+
+    answered++;
+    if (selected.value === answer.value) {
+      score++;
+      feedback.textContent = "✅ Richtig! " + answer.why;
+      feedback.className = "feedback good";
+    } else {
+      feedback.textContent = "💡 Noch nicht ganz. " + answer.why;
+      feedback.className = "feedback bad";
+    }
+  });
+
+  const result = document.getElementById("quizResult");
+  result.classList.remove("hidden");
+
+  if (answered < 8) {
+    result.innerHTML = `
+      <h3>Du hast ${answered} von 8 Fragen beantwortet.</h3>
+      <p>Beantworte die übrigen Fragen und klicke erneut auf „Antworten prüfen“.</p>
+    `;
+  } else {
+    result.innerHTML = `
+      <h3>Dein Ergebnis: ${score} von 8 Punkten!</h3>
+      <p>${score >= 6
+        ? "🎉 Hervorragend! Du bist ein echter Weltraum-Detektiv!"
+        : score >= 4
+          ? "🚀 Gute Arbeit! Mit etwas Übung wirst du noch sicherer."
+          : "🔭 Weiterforschen lohnt sich! Lies die Planetendossiers und versuche es erneut."}</p>
+      <div class="stars">${"⭐".repeat(score)}${"☆".repeat(8-score)}</div>
+      <p>Richtige Antworten: ${score} · Noch einmal üben: immer erlaubt!</p>
+    `;
+
+    window.quizPassed = score >= 6;
+    if (score >= 6) {
+      const mission = document.getElementById("m7");
+      if (mission) mission.checked = true;
+    }
+    updateProgress();
+  }
+
+  result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function resetQuiz() {
+  window.quizPassed = false;
+
+  Object.keys(answers).forEach((name, index) => {
+    const feedback = document.getElementById("f" + (index + 1));
+    feedback.textContent = "";
+    feedback.className = "feedback";
+  });
+
+  document.getElementById("quizResult").classList.add("hidden");
+
+  const mission = document.getElementById("m7");
+  if (mission) mission.checked = false;
+
+  updateProgress();
+}
+
+function downloadNotes() {
+  const name = document.getElementById("studentName").value.trim();
+  const planet = document.getElementById("favoritePlanet").value.trim();
+  const facts = document.getElementById("facts").value.trim();
+  const question = document.getElementById("question").value.trim();
+  const mission = document.getElementById("missionIdea").value.trim();
+
+  const content =
+`MEIN DIGITALES WELTRAUM-FORSCHERHEFT
+=====================================
+
+Forschername: ${name || "Nicht eingetragen"}
+
+Mein Lieblingsplanet:
+${planet || "Noch nicht eingetragen"}
+
+Drei Dinge, die ich gelernt habe:
+${facts || "Noch nicht eingetragen"}
+
+Meine große Weltraumfrage:
+${question || "Noch nicht eingetragen"}
+
+Meine eigene Weltraummission:
+${mission || "Noch nicht eingetragen"}
+
+Erstellt mit Weltraum-Detektive.
+`;
+
+  const blob = new Blob(["\uFEFF", content], {
+    type: "text/plain;charset=utf-8"
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "mein_weltraum_forscherheft.txt";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function clearNotes() {
+  if (!confirm("Möchtest du alle Einträge im Forscherheft wirklich löschen?")) {
+    return;
+  }
+
+  ["studentName", "favoritePlanet", "facts", "question", "missionIdea"]
+    .forEach(id => document.getElementById(id).value = "");
+}
+
+updateProgress();
+</script>
+</body>
+</html>
